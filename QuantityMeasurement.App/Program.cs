@@ -8,26 +8,44 @@ namespace QuantityMeasurement.App
     {
         static void Main(string[] args)
         {
+            QuantityMeasurementService service = new QuantityMeasurementService();
+
+            Console.WriteLine("1. Compare Feet");
+            Console.WriteLine("2. Compare Inch");
+            Console.Write("Select option: ");
+
+            int choice = Convert.ToInt32(Console.ReadLine());
+
             try
             {
-                Console.Write("Enter first value in feet: ");
+                Console.Write("Enter first value: ");
                 double value1 = Convert.ToDouble(Console.ReadLine());
 
-                Console.Write("Enter second value in feet: ");
+                Console.Write("Enter second value: ");
                 double value2 = Convert.ToDouble(Console.ReadLine());
 
-                Feet feet1 = new Feet(value1);
-                Feet feet2 = new Feet(value2);
+                if (choice == 1)
+                {
+                    Feet f1 = new Feet(value1);
+                    Feet f2 = new Feet(value2);
 
-                QuantityMeasurementService service = new QuantityMeasurementService();
+                    Console.WriteLine($"Equal? {service.CompareFeet(f1, f2)}");
+                }
+                else if (choice == 2)
+                {
+                    Inch i1 = new Inch(value1);
+                    Inch i2 = new Inch(value2);
 
-                bool result = service.CompareFeet(feet1, feet2);
-
-                Console.WriteLine($"Are the two values equal? {result}");
+                    Console.WriteLine($"Equal? {service.CompareInch(i1, i2)}");
+                }
+                else
+                {
+                    Console.WriteLine("Invalid option.");
+                }
             }
-            catch (Exception)
+            catch
             {
-                Console.WriteLine("Invalid input. Please enter numeric values only.");
+                Console.WriteLine("Invalid numeric input.");
             }
         }
     }

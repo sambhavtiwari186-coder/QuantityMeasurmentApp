@@ -1,5 +1,5 @@
-using System;
 using QuantityMeasurement.Library.Model;
+using System;
 
 namespace QuantityMeasurement.Library.Service
 {
@@ -9,6 +9,14 @@ namespace QuantityMeasurement.Library.Service
         {
             if (first == null || second == null)
                 throw new ArgumentNullException("Feet values cannot be null");
+
+            return first.Equals(second);
+        }
+
+        public bool CompareInch(Inch first, Inch second)
+        {
+            if (first == null || second == null)
+                throw new ArgumentNullException("Inch values cannot be null");
 
             return first.Equals(second);
         }
