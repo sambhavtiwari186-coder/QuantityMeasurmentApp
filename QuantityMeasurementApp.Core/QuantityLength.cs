@@ -1,0 +1,78 @@
+using System;
+
+namespace QuantityMeasurementApp.Core
+{
+    public class QuantityLength
+    {
+        // making field encapsulated
+        private readonly double value;
+        private readonly LengthUnit unit;
+
+        // constructor
+        public QuantityLength(double value, LengthUnit unit)
+        {
+            this.value = value;
+            this.unit = unit;
+        }
+
+
+        // overriding the Equals method to handle edge cases
+        public override bool Equals(object? obj)
+        {
+            // checking for same reference
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            // checking for object matches type and not null
+            if (obj == null || obj.GetType() != typeof(QuantityLength)) return false;
+
+            QuantityLength other = (QuantityLength)obj;
+
+            double thisBaseValue = this.unit.GetBaseValue(this.value);
+            double otherBaseValue = other.unit.GetBaseValue(other.value);
+
+            return thisBaseValue.CompareTo(otherBaseValue) == 0;
+        }
+
+        // comparing the actual value 
+        public override int GetHashCode()
+        {
+            return value.GetHashCode() ^ unit.GetHashCode();
+        }
+
+
+        /// <summary>
+        /// Converts the current quantity to a target unit and returns the numeric value.
+        /// </summary>
+        public double ConvertTo(LengthUnit targetUnit)
+        {
+            // 1. Validate Input
+            if (!double.IsFinite(this.value))
+            {
+                throw new ArgumentException("Value must be a finite number.");
+            }
+
+            // 2. Convert to Base Unit (Inches)
+            double baseValue = this.unit.GetBaseValue(this.value);
+
+            // 3. Convert from Base Unit to Target Unit
+            double targetFactor = targetUnit.GetConversionFactor();
+
+            // Avoid division by zero if factor is 0 (unlikely for length, but good practice)
+            if (targetFactor == 0) return 0;
+
+            double convertedValue = baseValue / targetFactor;
+
+            // 4. Return result (rounding can be handled by caller or here if strict equality needed)
+            return Math.Round(convertedValue, 5);
+        }
+
+
+        public override string ToString()
+        {
+            return $"{value} {unit}";
+        }
+    }
+}

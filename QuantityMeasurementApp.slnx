@@ -1,0 +1,7 @@
+<Solution>
+  <Folder Name="/QuantityMeasurementApp.core/">
+    <Project Path="QuantityMeasurementApp.core/QuantityMeasurementApp.Core.csproj" />
+  </Folder>
+  <Project Path="QuantityMeasurementApp.App/QuantityMeasurementApp.App.csproj" />
+  <Project Path="QuantityMeasurementApp.Tests/QuantityMeasurementApp.Tests.csproj" />
+</Solution>

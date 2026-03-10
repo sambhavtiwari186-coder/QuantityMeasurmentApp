@@ -1,5 +1,0 @@
-<Solution>
-  <Project Path="QuantityMeasurement.App/QuantityMeasurement.App.csproj" />
-  <Project Path="QuantityMeasurement.Library/QuantityMeasurement.Library.csproj" />
-  <Project Path="QuantityMeasurement.Tests/QuantityMeasurement.Tests.csproj" />
-</Solution>

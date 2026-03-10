@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\QuantityMeasurement.Library\QuantityMeasurement.Library.csproj" />
+    <ProjectReference Include="..\QuantityMeasurementApp.Core\QuantityMeasurementApp.Core.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
