@@ -8,18 +8,18 @@ namespace QuantityMeasurement.App
     {
         static void Main(string[] args)
         {
-            QuantityMeasurementService service = new QuantityMeasurementService();
+            var service = new QuantityMeasurementService();
 
             Console.Write("Enter first value: ");
             double value1 = Convert.ToDouble(Console.ReadLine());
 
-            Console.Write("Enter unit (Feet/Inch): ");
+            Console.Write("Enter unit (Feet/Inch/Yard/Centimeter): ");
             Unit unit1 = Enum.Parse<Unit>(Console.ReadLine(), true);
 
             Console.Write("Enter second value: ");
             double value2 = Convert.ToDouble(Console.ReadLine());
 
-            Console.Write("Enter unit (Feet/Inch): ");
+            Console.Write("Enter unit (Feet/Inch/Yard/Centimeter): ");
             Unit unit2 = Enum.Parse<Unit>(Console.ReadLine(), true);
 
             Length length1 = new Length(value1, unit1);

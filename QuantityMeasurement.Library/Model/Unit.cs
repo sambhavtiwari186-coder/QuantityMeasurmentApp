@@ -3,6 +3,8 @@ namespace QuantityMeasurement.Library.Model
     public enum Unit
     {
         Feet,
-        Inch
+        Inch,
+        Yard,
+        Centimeter
     }
 }

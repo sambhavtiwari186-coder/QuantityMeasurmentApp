@@ -11,30 +11,39 @@ namespace QuantityMeasurement.Tests
             new QuantityMeasurementService();
 
         [TestMethod]
-        public void GivenOneFeetAndTwelveInch_ShouldReturnTrue()
+        public void OneYard_Equals_ThreeFeet()
         {
-            Length feet = new Length(1, Unit.Feet);
-            Length inch = new Length(12, Unit.Inch);
+            var yard = new Length(1, Unit.Yard);
+            var feet = new Length(3, Unit.Feet);
 
-            Assert.IsTrue(service.CompareLength(feet, inch));
+            Assert.IsTrue(service.CompareLength(yard, feet));
         }
 
         [TestMethod]
-        public void GivenTwoFeetAndTwentyFourInch_ShouldReturnTrue()
+        public void OneYard_Equals_ThirtySixInches()
         {
-            Length feet = new Length(2, Unit.Feet);
-            Length inch = new Length(24, Unit.Inch);
+            var yard = new Length(1, Unit.Yard);
+            var inch = new Length(36, Unit.Inch);
 
-            Assert.IsTrue(service.CompareLength(feet, inch));
+            Assert.IsTrue(service.CompareLength(yard, inch));
         }
 
         [TestMethod]
-        public void GivenDifferentValues_ShouldReturnFalse()
+        public void TwoPointFiveFourCm_Equals_OneInch()
         {
-            Length feet = new Length(1, Unit.Feet);
-            Length inch = new Length(10, Unit.Inch);
+            var cm = new Length(2.54, Unit.Centimeter);
+            var inch = new Length(1, Unit.Inch);
 
-            Assert.IsFalse(service.CompareLength(feet, inch));
+            Assert.IsTrue(service.CompareLength(cm, inch));
+        }
+
+        [TestMethod]
+        public void DifferentValues_ReturnFalse()
+        {
+            var yard = new Length(1, Unit.Yard);
+            var feet = new Length(2, Unit.Feet);
+
+            Assert.IsFalse(service.CompareLength(yard, feet));
         }
     }
 }

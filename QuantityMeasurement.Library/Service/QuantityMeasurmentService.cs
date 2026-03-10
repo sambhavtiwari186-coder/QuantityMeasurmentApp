@@ -1,5 +1,5 @@
-using QuantityMeasurement.Library.Model;
 using System;
+using QuantityMeasurement.Library.Model;
 
 namespace QuantityMeasurement.Library.Service
 {
