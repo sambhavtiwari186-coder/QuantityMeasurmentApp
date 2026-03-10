@@ -74,5 +74,30 @@ namespace QuantityMeasurementApp.Core
         {
             return $"{value} {unit}";
         }
+
+
+        //methods for addition
+        public QuantityLength Add(QuantityLength other)
+        {
+            if (other == null)
+            {
+                throw new ArgumentNullException(nameof(other));
+            }
+
+            double convertedOtherValue = other.ConvertTo(this.unit);
+            double sumValue = Math.Round(this.value + convertedOtherValue, 5);
+
+            return new QuantityLength(sumValue, this.unit);
+        }
+
+        public static QuantityLength Add(QuantityLength first, QuantityLength second)
+        {
+            if (first == null)
+            {
+                throw new ArgumentNullException(nameof(first));
+            }
+            
+            return first.Add(second);
+        }
     }
 }
