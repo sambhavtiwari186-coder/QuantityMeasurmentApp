@@ -10,33 +10,24 @@ namespace QuantityMeasurement.App
         {
             QuantityMeasurementService service = new QuantityMeasurementService();
 
-           Console.WriteLine("1. Compare Feet");
-Console.WriteLine("2. Compare Inch");
-Console.WriteLine("3. Compare Feet & Inch");
-Console.Write("Select option: ");
+            Console.Write("Enter first value: ");
+            double value1 = Convert.ToDouble(Console.ReadLine());
 
-int choice = Convert.ToInt32(Console.ReadLine());
+            Console.Write("Enter unit (Feet/Inch): ");
+            Unit unit1 = Enum.Parse<Unit>(Console.ReadLine(), true);
 
-try
-{
-    if (choice == 3)
-    {
-        Console.Write("Enter value in Feet: ");
-        double feetValue = Convert.ToDouble(Console.ReadLine());
+            Console.Write("Enter second value: ");
+            double value2 = Convert.ToDouble(Console.ReadLine());
 
-        Console.Write("Enter value in Inch: ");
-        double inchValue = Convert.ToDouble(Console.ReadLine());
+            Console.Write("Enter unit (Feet/Inch): ");
+            Unit unit2 = Enum.Parse<Unit>(Console.ReadLine(), true);
 
-        Feet feet = new Feet(feetValue);
-        Inch inch = new Inch(inchValue);
+            Length length1 = new Length(value1, unit1);
+            Length length2 = new Length(value2, unit2);
 
-        Console.WriteLine($"Equal? {service.CompareFeetAndInch(feet, inch)}");
-    }
-}
-catch
-{
-    Console.WriteLine("Invalid input.");
-}
+            bool result = service.CompareLength(length1, length2);
+
+            Console.WriteLine($"Equal? {result}");
         }
     }
 }
