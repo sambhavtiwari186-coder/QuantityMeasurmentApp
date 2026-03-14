@@ -1,3 +1,21 @@
 .gitattributes
+
+# Build results
 **/bin/
 **/obj/
+
+# Visual Studio / Visual Studio Code
+.vs/
+.vscode/
+*.user
+*.suo
+
+# Test results
+TestResults/
+
+# Local cache/database files created by our application
+measurement_history.json
+
+# Temporary logs
+*.log
+*.txt

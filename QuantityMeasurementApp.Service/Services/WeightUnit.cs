@@ -1,4 +1,5 @@
-namespace QuantityMeasurementApp.Core
+using QuantityMeasurementApp.Service.Interfaces;
+namespace QuantityMeasurementApp.Service.Services
 {
     // Represents weight units with base unit as Kilogram
     public class WeightUnit : IMeasurable
@@ -32,6 +33,19 @@ namespace QuantityMeasurementApp.Core
         }
 
         public string GetUnitName() => name;
+
+        public string GetMeasurementType() => "Weight";
+
+        public IMeasurable GetUnitInstance(string name)
+        {
+            return name.ToUpper() switch
+            {
+                "KILOGRAM" => Kilogram,
+                "GRAM" => Gram,
+                "POUND" => Pound,
+                _ => throw new System.ArgumentException($"Invalid Weight unit: {name}")
+            };
+        }
 
         public override string ToString() => name;
     }

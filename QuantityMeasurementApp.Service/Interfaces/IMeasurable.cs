@@ -1,4 +1,4 @@
-namespace QuantityMeasurementApp.Core
+namespace QuantityMeasurementApp.Service.Interfaces
 {
     // Interface for measurement units
     public interface IMeasurable
@@ -14,6 +14,10 @@ namespace QuantityMeasurementApp.Core
 
         // Returns unit name
         string GetUnitName();
+
+        // Target for UC15 DTO mappings
+        string GetMeasurementType();
+        IMeasurable GetUnitInstance(string name);
 
         // UC14: Optional Operation Support (Default interface methods)
         bool SupportsArithmetic() => true;

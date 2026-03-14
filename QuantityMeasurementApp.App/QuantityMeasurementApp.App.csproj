@@ -1,7 +1,10 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\QuantityMeasurementApp.Core\QuantityMeasurementApp.Core.csproj" />
+    <ProjectReference Include="..\QuantityMeasurementApp.Controller\QuantityMeasurementApp.Controller.csproj" />
+    <ProjectReference Include="..\QuantityMeasurementApp.Service\QuantityMeasurementApp.Service.csproj" />
+    <ProjectReference Include="..\QuantityMeasurementApp.Repository\QuantityMeasurementApp.Repository.csproj" />
+    <ProjectReference Include="..\QuantityMeasurementApp.Entity\QuantityMeasurementApp.Entity.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

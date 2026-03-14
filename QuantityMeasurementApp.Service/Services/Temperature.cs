@@ -1,6 +1,7 @@
+using QuantityMeasurementApp.Service.Interfaces;
 using System;
 
-namespace QuantityMeasurementApp.Core
+namespace QuantityMeasurementApp.Service.Services
 {
     public class TemperatureUnit : IMeasurable
     {
@@ -39,6 +40,19 @@ namespace QuantityMeasurementApp.Core
         public double ConvertFromBaseUnit(double baseValue) => fromBase(baseValue);
 
         public string GetUnitName() => name;
+
+        public string GetMeasurementType() => "Temperature";
+
+        public IMeasurable GetUnitInstance(string name)
+        {
+            return name.ToUpper() switch
+            {
+                "CELSIUS" => Celsius,
+                "FAHRENHEIT" => Fahrenheit,
+                "KELVIN" => Kelvin,
+                _ => throw new ArgumentException($"Invalid Temperature unit: {name}")
+            };
+        }
 
         // UC14: Opt-out of Arithmetic Operations
         public bool SupportsArithmetic() => false;
