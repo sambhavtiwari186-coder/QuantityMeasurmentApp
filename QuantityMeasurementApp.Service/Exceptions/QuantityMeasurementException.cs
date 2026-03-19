@@ -1,6 +1,6 @@
 using System;
 
-namespace QuantityMeasurementApp.Service.Services
+namespace QuantityMeasurementApp.Service
 {
     // Custom exception to handle errors and exceptional conditions for quantities
     public class QuantityMeasurementException : Exception
@@ -14,3 +14,4 @@ namespace QuantityMeasurementApp.Service.Services
         }
     }
 }
+

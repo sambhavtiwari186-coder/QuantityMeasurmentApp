@@ -1,10 +1,8 @@
 using System;
-using QuantityMeasurementApp.Entity.Models;
-using QuantityMeasurementApp.Service.Interfaces;
-using QuantityMeasurementApp.Repository.Interfaces;
+using QuantityMeasurementApp.Entity;
+using QuantityMeasurementApp.Repository;
 
-
-namespace QuantityMeasurementApp.Service.Services
+namespace QuantityMeasurementApp.Service
 {
     public class QuantityMeasurementService : IQuantityMeasurementService
     {
@@ -12,22 +10,28 @@ namespace QuantityMeasurementApp.Service.Services
 
         public QuantityMeasurementService(IQuantityMeasurementRepository repository)
         {
-            this.repository = repository ?? throw new ArgumentNullException(nameof(repository));
+            this.repository = repository;
         }
 
         // --- Helper Methods to Retrieve Typed Models from DTO ---
         
         private IMeasurable GetUnitFromDTO(QuantityDTO dto)
         {
-            var measurementType = dto.MeasurementType.ToUpper();
-            return measurementType switch
+            string measurementType = dto.MeasurementType.ToUpper();
+
+            switch (measurementType)
             {
-                "LENGTH" => LengthUnit.Feet.GetUnitInstance(dto.Unit),
-                "VOLUME" => VolumeUnit.Litre.GetUnitInstance(dto.Unit),
-                "WEIGHT" => WeightUnit.Kilogram.GetUnitInstance(dto.Unit),
-                "TEMPERATURE" => TemperatureUnit.Celsius.GetUnitInstance(dto.Unit),
-                _ => throw new QuantityMeasurementException($"Unsupported Measurement Type: {dto.MeasurementType}")
-            };
+                case "LENGTH":
+                    return LengthUnit.Feet.GetUnitInstance(dto.Unit);
+                case "VOLUME":
+                    return VolumeUnit.Litre.GetUnitInstance(dto.Unit);
+                case "WEIGHT":
+                    return WeightUnit.Kilogram.GetUnitInstance(dto.Unit);
+                case "TEMPERATURE":
+                    return TemperatureUnit.Celsius.GetUnitInstance(dto.Unit);
+                default:
+                    throw new QuantityMeasurementException($"Unsupported Measurement Type: {dto.MeasurementType}");
+            }
         }
 
         private QuantityModel<IMeasurable> GetModelFromDTO(QuantityDTO dto)
@@ -68,8 +72,14 @@ namespace QuantityMeasurementApp.Service.Services
                 bool areEqual = baseVal1.CompareTo(baseVal2) == 0;
 
                 // Save Entity
-                var resultString = areEqual ? "Equal" : "Not Equal";
-                var entity = new QuantityMeasurementEntity(q1.ToString(), q2.ToString(), "Equality", resultString);
+                var resultString    = areEqual ? "Equal" : "Not Equal";
+                var measurementType = q1.MeasurementType;
+                var entity = new QuantityMeasurementEntity(
+                    q1.ToString(),
+                    q2.ToString(),
+                    "Equality",
+                    resultString,
+                    measurementType);
                 repository.SaveMeasurement(entity);
 
                 // Return DTO containing boolean as string in the Value/Unit hack, 
@@ -94,9 +104,16 @@ namespace QuantityMeasurementApp.Service.Services
                 double baseVal = model.Unit.ConvertToBaseUnit(model.Value);
                 double convertedVal = Math.Round(targetUnit.ConvertFromBaseUnit(baseVal), 5);
 
-                var resultDto = new QuantityDTO(convertedVal, targetUnit.GetUnitName(), targetUnit.GetMeasurementType());
+                var resultDto = new QuantityDTO(
+                    convertedVal,
+                    targetUnit.GetUnitName(),
+                    targetUnit.GetMeasurementType());
 
-                var entity = new QuantityMeasurementEntity(source.ToString(), "Conversion", resultDto.ToString());
+                var entity = new QuantityMeasurementEntity(
+                    source.ToString(),
+                    "Conversion",
+                    resultDto.ToString(),
+                    targetUnit.GetMeasurementType());
                 repository.SaveMeasurement(entity);
 
                 return resultDto;
@@ -111,12 +128,12 @@ namespace QuantityMeasurementApp.Service.Services
 
         public QuantityDTO Add(QuantityDTO q1, QuantityDTO q2, string targetUnitName)
         {
-            return PerformArithmetic(q1, q2, targetUnitName, "Addition", (b1, b2) => b1 + b2);
+            return PerformArithmetic(q1, q2, targetUnitName, "Addition");
         }
 
         public QuantityDTO Subtract(QuantityDTO q1, QuantityDTO q2, string targetUnitName)
         {
-            return PerformArithmetic(q1, q2, targetUnitName, "Subtraction", (b1, b2) => b1 - b2);
+            return PerformArithmetic(q1, q2, targetUnitName, "Subtraction");
         }
 
         public QuantityDTO Divide(QuantityDTO q1, QuantityDTO q2)
@@ -140,7 +157,12 @@ namespace QuantityMeasurementApp.Service.Services
                 double result = baseVal1 / baseVal2;
                 var resultDto = new QuantityDTO(result, "Ratio", "Scalar");
 
-                var entity = new QuantityMeasurementEntity(q1.ToString(), q2.ToString(), "Division", resultDto.ToString());
+                var entity = new QuantityMeasurementEntity(
+                    q1.ToString(),
+                    q2.ToString(),
+                    "Division",
+                    resultDto.ToString(),
+                    q1.MeasurementType);
                 repository.SaveMeasurement(entity);
 
                 return resultDto;
@@ -153,7 +175,7 @@ namespace QuantityMeasurementApp.Service.Services
             }
         }
 
-        private QuantityDTO PerformArithmetic(QuantityDTO q1, QuantityDTO q2, string targetUnitName, string operationName, Func<double, double, double> compute)
+        private QuantityDTO PerformArithmetic(QuantityDTO q1, QuantityDTO q2, string targetUnitName, string operationName)
         {
             try
             {
@@ -168,18 +190,42 @@ namespace QuantityMeasurementApp.Service.Services
                 double baseVal1 = model1.Unit.ConvertToBaseUnit(model1.Value);
                 double baseVal2 = model2.Unit.ConvertToBaseUnit(model2.Value);
 
-                double baseResult = compute(baseVal1, baseVal2);
+                double baseResult = 0;
+                if (operationName == "Addition")
+                {
+                    baseResult = baseVal1 + baseVal2;
+                }
+                else if (operationName == "Subtraction")
+                {
+                    baseResult = baseVal1 - baseVal2;
+                }
+                else
+                {
+                    throw new QuantityMeasurementException("Unsupported Arithmetic Operation: " + operationName);
+                }
                 double targetResult = Math.Round(targetUnit.ConvertFromBaseUnit(baseResult), 5);
 
-                var resultDto = new QuantityDTO(targetResult, targetUnit.GetUnitName(), targetUnit.GetMeasurementType());
+                var resultDto = new QuantityDTO(
+                    targetResult,
+                    targetUnit.GetUnitName(),
+                    targetUnit.GetMeasurementType());
 
-                var entity = new QuantityMeasurementEntity(q1.ToString(), q2.ToString(), operationName, resultDto.ToString());
+                var entity = new QuantityMeasurementEntity(
+                    q1.ToString(),
+                    q2.ToString(),
+                    operationName,
+                    resultDto.ToString(),
+                    q1.MeasurementType);
                 repository.SaveMeasurement(entity);
 
                 return resultDto;
             }
             catch (Exception ex)
             {
+                if (q1.MeasurementType.Equals("Temperature", StringComparison.OrdinalIgnoreCase))
+                {
+                    ex = new QuantityMeasurementException("Temperature does not support Addition/Subtraction operations.", ex);
+                }
                 var entity = new QuantityMeasurementEntity(q1.ToString(), q2.ToString(), operationName, ex.Message, true);
                 repository.SaveMeasurement(entity);
                 throw new QuantityMeasurementException(ex.Message, ex);

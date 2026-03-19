@@ -1,7 +1,6 @@
-using QuantityMeasurementApp.Entity.Models;
-using QuantityMeasurementApp.Service.Interfaces;
+using QuantityMeasurementApp.Entity;
 
-namespace QuantityMeasurementApp.Service.Interfaces
+namespace QuantityMeasurementApp.Service
 {
     // Interface for performing quantity operations
     public interface IQuantityMeasurementService
@@ -13,3 +12,4 @@ namespace QuantityMeasurementApp.Service.Interfaces
         QuantityDTO Divide(QuantityDTO q1, QuantityDTO q2);
     }
 }
+

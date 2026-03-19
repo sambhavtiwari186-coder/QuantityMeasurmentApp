@@ -2,10 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
-using QuantityMeasurementApp.Entity.Models;
-using QuantityMeasurementApp.Repository.Interfaces;
+using QuantityMeasurementApp.Entity;
 
-namespace QuantityMeasurementApp.Repository.Services
+namespace QuantityMeasurementApp.Repository
 {
     // Singleton Cache Repository implementing IQuantityMeasurementRepository
     public class QuantityMeasurementCacheRepository : IQuantityMeasurementRepository
@@ -48,7 +47,7 @@ namespace QuantityMeasurementApp.Repository.Services
             }
         }
 
-        public IEnumerable<QuantityMeasurementEntity> GetAllMeasurements()
+        public List<QuantityMeasurementEntity> GetAllMeasurements()
         {
             lock (lockObject)
             {
@@ -57,12 +56,24 @@ namespace QuantityMeasurementApp.Repository.Services
             }
         }
 
+        public int GetTotalCount()
+        {
+            lock (lockObject)
+            {
+                return measurementCache.Count;
+            }
+        }
+
         // Persistence: Save to disk using JSON
         private void SaveToDisk()
         {
             try
             {
-                var options = new JsonSerializerOptions { WriteIndented = true };
+                var options = new JsonSerializerOptions
+                {
+                    WriteIndented = true,
+                    PropertyNameCaseInsensitive = true
+                };
                 string jsonString = JsonSerializer.Serialize(measurementCache, options);
                 File.WriteAllText(filePath, jsonString);
             }
@@ -80,7 +91,11 @@ namespace QuantityMeasurementApp.Repository.Services
                 if (File.Exists(filePath))
                 {
                     string jsonString = File.ReadAllText(filePath);
-                    var loadedMeasurements = JsonSerializer.Deserialize<List<QuantityMeasurementEntity>>(jsonString);
+                    var options = new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    };
+                    var loadedMeasurements = JsonSerializer.Deserialize<List<QuantityMeasurementEntity>>(jsonString, options);
                     if (loadedMeasurements != null)
                     {
                         measurementCache.AddRange(loadedMeasurements);

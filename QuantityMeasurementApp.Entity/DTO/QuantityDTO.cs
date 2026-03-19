@@ -1,6 +1,6 @@
 using System;
 
-namespace QuantityMeasurementApp.Entity.Models
+namespace QuantityMeasurementApp.Entity
 {
     // DTO for holding quantity measurement input data
     public class QuantityDTO
@@ -24,3 +24,4 @@ namespace QuantityMeasurementApp.Entity.Models
         }
     }
 }
+

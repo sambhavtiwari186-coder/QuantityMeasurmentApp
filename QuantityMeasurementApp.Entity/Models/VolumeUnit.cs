@@ -1,5 +1,4 @@
-using QuantityMeasurementApp.Service.Interfaces;
-namespace QuantityMeasurementApp.Service.Services
+namespace QuantityMeasurementApp.Entity
 {
     // Represents volume units with base unit as Litre
     public class VolumeUnit : IMeasurable
@@ -38,15 +37,16 @@ namespace QuantityMeasurementApp.Service.Services
 
         public IMeasurable GetUnitInstance(string name)
         {
-            return name.ToUpper() switch
+            switch (name.ToUpper())
             {
-                "LITRE" => Litre,
-                "MILLILITRE" => Millilitre,
-                "GALLON" => Gallon,
-                _ => throw new System.ArgumentException($"Invalid Volume unit: {name}")
-            };
+                case "LITRE": return Litre;
+                case "MILLILITRE": return Millilitre;
+                case "GALLON": return Gallon;
+                default: throw new System.ArgumentException($"Invalid Volume unit: {name}");
+            }
         }
 
         public override string ToString() => name;
     }
 }
+

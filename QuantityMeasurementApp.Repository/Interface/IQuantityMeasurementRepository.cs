@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using QuantityMeasurementApp.Entity.Models;
+using QuantityMeasurementApp.Entity;
 
-namespace QuantityMeasurementApp.Repository.Interfaces
+namespace QuantityMeasurementApp.Repository
 {
     // Interface Segregation Principle: specific interface for repository operations
     public interface IQuantityMeasurementRepository
@@ -10,6 +10,10 @@ namespace QuantityMeasurementApp.Repository.Interfaces
         void SaveMeasurement(QuantityMeasurementEntity measurement);
 
         // Retrieve all stored measurements
-        IEnumerable<QuantityMeasurementEntity> GetAllMeasurements();
+        List<QuantityMeasurementEntity> GetAllMeasurements();
+
+        // Return the total count of stored measurements
+        int GetTotalCount();
     }
 }
+

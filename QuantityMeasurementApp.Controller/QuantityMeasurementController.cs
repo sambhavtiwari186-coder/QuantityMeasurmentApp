@@ -1,8 +1,6 @@
 using System;
-using QuantityMeasurementApp.Entity.Models;
-using QuantityMeasurementApp.Service.Interfaces;
-using QuantityMeasurementApp.Service.Services;
-
+using QuantityMeasurementApp.Entity;
+using QuantityMeasurementApp.Service;
 
 namespace QuantityMeasurementApp.Controller
 {
@@ -13,7 +11,7 @@ namespace QuantityMeasurementApp.Controller
 
         public QuantityMeasurementController(IQuantityMeasurementService service)
         {
-            this.service = service ?? throw new ArgumentNullException(nameof(service));
+            this.service = service;
         }
 
         public void PerformComparison(QuantityDTO q1, QuantityDTO q2)

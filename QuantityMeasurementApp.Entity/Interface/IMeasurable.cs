@@ -1,4 +1,4 @@
-namespace QuantityMeasurementApp.Service.Interfaces
+namespace QuantityMeasurementApp.Entity
 {
     // Interface for measurement units
     public interface IMeasurable
@@ -29,3 +29,4 @@ namespace QuantityMeasurementApp.Service.Interfaces
         }
     }
 }
+

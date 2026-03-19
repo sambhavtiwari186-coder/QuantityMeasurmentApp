@@ -1,6 +1,7 @@
 using System;
+using System.Text.Json.Serialization;
 
-namespace QuantityMeasurementApp.Entity.Models
+namespace QuantityMeasurementApp.Entity
 {
     // Comprehensive data holder for storing operations in a repository
     [Serializable]
@@ -9,46 +10,72 @@ namespace QuantityMeasurementApp.Entity.Models
         public string FirstOperand { get; }
         public string SecondOperand { get; }
         public string OperationType { get; }
+        public string MeasurementType { get; }
         public string FinalResult { get; }
         public bool HasError { get; }
         public string ErrorMessage { get; }
         public DateTime Timestamp { get; }
 
-        // Constructor for Single Operand Operations (e.g., Conversion)
-        public QuantityMeasurementEntity(string operand, string operationType, string result)
-        {
-            this.FirstOperand = operand;
-            this.SecondOperand = "N/A";
-            this.OperationType = operationType;
-            this.FinalResult = result;
-            this.HasError = false;
-            this.ErrorMessage = "None";
-            this.Timestamp = DateTime.Now;
-        }
-
-        // Constructor for Binary Operand Operations (e.g., Addition, Comparison)
-        public QuantityMeasurementEntity(string firstOperand, string secondOperand, string operationType, string result)
-        {
-            this.FirstOperand = firstOperand;
-            this.SecondOperand = secondOperand;
-            this.OperationType = operationType;
-            this.FinalResult = result;
-            this.HasError = false;
-            this.ErrorMessage = "None";
-            this.Timestamp = DateTime.Now;
-        }
-
-        // Constructor for Error scenarios
-        public QuantityMeasurementEntity(string firstOperand, string secondOperand, string operationType, string errorMessage, bool hasError)
+        // Used by System.Text.Json deserialization (cache + pending sync files).
+        [JsonConstructor]
+        public QuantityMeasurementEntity(
+            string firstOperand,
+            string secondOperand,
+            string operationType,
+            string measurementType,
+            string finalResult,
+            bool hasError,
+            string errorMessage,
+            DateTime timestamp)
         {
             this.FirstOperand = firstOperand ?? "Unknown";
             this.SecondOperand = secondOperand ?? "Unknown";
-            this.OperationType = operationType;
-            this.FinalResult = "Error";
+            this.OperationType = operationType ?? "Unknown";
+            this.MeasurementType = measurementType ?? "N/A";
+            this.FinalResult = finalResult ?? "Error";
             this.HasError = hasError;
-            this.ErrorMessage = errorMessage;
-            this.Timestamp = DateTime.Now;
+            this.ErrorMessage = errorMessage ?? "None";
+            this.Timestamp = timestamp == default ? DateTime.Now : timestamp;
         }
+
+        // Constructor for Single Operand Operations (e.g., Conversion)
+        public QuantityMeasurementEntity(string operand, string operationType, string result, string measurementType = "N/A")
+            : this(
+                operand,
+                "N/A",
+                operationType,
+                measurementType,
+                result,
+                false,
+                "None",
+                DateTime.Now)
+        { }
+
+        // Constructor for Binary Operand Operations (e.g., Addition, Comparison)
+        public QuantityMeasurementEntity(string firstOperand, string secondOperand, string operationType, string result, string measurementType = "N/A")
+            : this(
+                firstOperand,
+                secondOperand,
+                operationType,
+                measurementType,
+                result,
+                false,
+                "None",
+                DateTime.Now)
+        { }
+
+        // Constructor for Error scenarios
+        public QuantityMeasurementEntity(string firstOperand, string secondOperand, string operationType, string errorMessage, bool hasError, string measurementType = "N/A")
+            : this(
+                firstOperand ?? "Unknown",
+                secondOperand ?? "Unknown",
+                operationType,
+                measurementType,
+                "Error",
+                hasError,
+                errorMessage,
+                DateTime.Now)
+        { }
 
         public override string ToString()
         {
@@ -60,3 +87,4 @@ namespace QuantityMeasurementApp.Entity.Models
         }
     }
 }
+

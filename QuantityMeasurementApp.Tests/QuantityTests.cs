@@ -1,11 +1,9 @@
 using System;
 using System.Linq;
 using NUnit.Framework;
-using QuantityMeasurementApp.Entity.Models;
-using QuantityMeasurementApp.Repository.Interfaces;
-using QuantityMeasurementApp.Repository.Services;
-using QuantityMeasurementApp.Service.Interfaces;
-using QuantityMeasurementApp.Service.Services;
+using QuantityMeasurementApp.Entity;
+using QuantityMeasurementApp.Repository;
+using QuantityMeasurementApp.Service;
 
 namespace QuantityMeasurementApp.Tests
 {
