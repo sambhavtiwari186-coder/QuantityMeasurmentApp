@@ -1,86 +1,130 @@
 using System;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using QuantityMeasurementApp.Entity;
+using QuantityMeasurementApp.Repository;
 using QuantityMeasurementApp.Service;
 
 namespace QuantityMeasurementApp.Controller
 {
-    // Facade controller that orchestrates User requests and Service logic
-    public class QuantityMeasurementController
+    [ApiController]
+    [Route("api/measurement")]
+    [Authorize]
+    public class QuantityMeasurementController : ControllerBase
     {
-        private readonly IQuantityMeasurementService service;
+        private readonly IQuantityMeasurementService _service;
+        private readonly IQuantityMeasurementRepository _repository;
 
-        public QuantityMeasurementController(IQuantityMeasurementService service)
+        public QuantityMeasurementController(IQuantityMeasurementService service, IQuantityMeasurementRepository repository)
         {
-            this.service = service;
+            _service = service;
+            _repository = repository;
         }
 
-        public void PerformComparison(QuantityDTO q1, QuantityDTO q2)
+        public class ConvertRequest
+        {
+            public QuantityDTO Source { get; set; } = null!;
+            public string TargetUnit { get; set; } = string.Empty;
+        }
+
+        public class CompareRequest
+        {
+            public QuantityDTO Quantity1 { get; set; } = null!;
+            public QuantityDTO Quantity2 { get; set; } = null!;
+        }
+
+        public class ArithmeticRequest
+        {
+            public QuantityDTO Quantity1 { get; set; } = null!;
+            public QuantityDTO Quantity2 { get; set; } = null!;
+            public string TargetUnit { get; set; } = string.Empty;
+        }
+
+        [HttpPost("convert")]
+        public IActionResult Convert([FromBody] ConvertRequest request)
         {
             try
             {
-                QuantityDTO result = service.Compare(q1, q2);
+                var result = _service.Convert(request.Source, request.TargetUnit);
+                return Ok(result);
+            }
+            catch (QuantityMeasurementException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpPost("compare")]
+        public IActionResult Compare([FromBody] CompareRequest request)
+        {
+            try
+            {
+                var result = _service.Compare(request.Quantity1, request.Quantity2);
                 bool areEqual = result.Value == 1.0;
-                Console.WriteLine($"Comparison: {q1} equals {q2} -> Output: {areEqual}");
+                return Ok(new { AreEqual = areEqual });
             }
             catch (QuantityMeasurementException ex)
             {
-                Console.WriteLine($"Error during Comparison: {ex.Message}");
+                return BadRequest(ex.Message);
             }
-            catch (Exception ex) // Catch-all for unexpected issues
+            catch (Exception ex)
             {
-                Console.WriteLine($"Unexpected error during Comparison: {ex.Message}");
+                return StatusCode(500, ex.Message);
             }
         }
 
-        public void PerformConversion(QuantityDTO source, string targetUnitName)
+        [HttpPost("add")]
+        public IActionResult Add([FromBody] ArithmeticRequest request)
         {
             try
             {
-                QuantityDTO result = service.Convert(source, targetUnitName);
-                Console.WriteLine($"Converted: Quantity({source.Value}, {source.Unit}).ConvertTo({targetUnitName}) -> Output: {result}");
+                var result = _service.Add(request.Quantity1, request.Quantity2, request.TargetUnit);
+                return Ok(result);
             }
             catch (QuantityMeasurementException ex)
             {
-                Console.WriteLine($"Error during Conversion: {ex.Message}");
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
             }
         }
 
-        public void PerformAddition(QuantityDTO q1, QuantityDTO q2, string targetUnitName)
+        [HttpPost("subtract")]
+        public IActionResult Subtract([FromBody] ArithmeticRequest request)
         {
             try
             {
-                QuantityDTO result = service.Add(q1, q2, targetUnitName);
-                Console.WriteLine($"Addition: {q1} + {q2} in {targetUnitName} -> Output: {result}");
+                var result = _service.Subtract(request.Quantity1, request.Quantity2, request.TargetUnit);
+                return Ok(result);
             }
             catch (QuantityMeasurementException ex)
             {
-                Console.WriteLine($"Error Catch: {ex.Message}");
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
             }
         }
 
-        public void PerformSubtraction(QuantityDTO q1, QuantityDTO q2, string targetUnitName)
+        [HttpGet("history")]
+        public ActionResult<List<QuantityMeasurementEntity>> GetHistory()
         {
             try
             {
-                QuantityDTO result = service.Subtract(q1, q2, targetUnitName);
-                Console.WriteLine($"Subtraction: {q1} - {q2} in {targetUnitName} -> Output: {result}");
+                var results = _repository.GetAllMeasurements();
+                return Ok(results);
             }
-            catch (QuantityMeasurementException ex)
+            catch (Exception ex)
             {
-                Console.WriteLine($"Error Catch: {ex.Message}");
-            }
-        }
-
-        public void PerformDivision(QuantityDTO q1, QuantityDTO q2)
-        {
-            try
-            {
-                QuantityDTO result = service.Divide(q1, q2);
-                Console.WriteLine($"Division: {q1} / {q2} -> Output: {result}");
-            }
-            catch (QuantityMeasurementException ex)
-            {
-                Console.WriteLine($"Error Catch: {ex.Message}");
+                return StatusCode(500, $"Unable to retrieve history: {ex.Message}");
             }
         }
     }

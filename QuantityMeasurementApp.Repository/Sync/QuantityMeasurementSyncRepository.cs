@@ -1,62 +1,74 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Extensions.DependencyInjection;
 using QuantityMeasurementApp.Entity;
 
-namespace QuantityMeasurementApp.Repository
+namespace QuantityMeasurementApp.Repository.Sync
 {
-    // Offline-first repository: always writes to cache JSON first and then tries to push to SQL Server.
-    // If SQL Server is unavailable, items are queued in a pending file and retried later.
     public class QuantityMeasurementSyncRepository : IQuantityMeasurementRepository
     {
-        private readonly IQuantityMeasurementRepository _cache;
-        private readonly IQuantityMeasurementRepository? _database;
+        private readonly IQuantityMeasurementRepository _database;
         private readonly PendingSyncStore _pendingStore;
+        private readonly PendingSyncStore _historyStore;
 
         public QuantityMeasurementSyncRepository(
-            IQuantityMeasurementRepository cacheRepository,
-            IQuantityMeasurementRepository? databaseRepository,
-            PendingSyncStore? pendingStore = null)
+            IQuantityMeasurementRepository databaseRepository)
         {
-            _cache = cacheRepository;
-            _database = databaseRepository; // allowed to be null (offline mode)
-            _pendingStore = pendingStore ?? new PendingSyncStore();
+            _database = databaseRepository;
+            _pendingStore = new PendingSyncStore("measurement_pending.json");
+            _historyStore = new PendingSyncStore("measurement_history.json");
         }
 
         public void SaveMeasurement(QuantityMeasurementEntity measurement)
         {
             if (measurement == null) throw new ArgumentNullException(nameof(measurement));
 
-            // 1) Always store locally first (offline-first).
-            _cache.SaveMeasurement(measurement);
-
-            // 2) Then best-effort push to DB; if it fails, queue for later.
-            if (_database == null)
-            {
-                _pendingStore.Enqueue(measurement);
-                return;
-            }
-
             try
             {
+                // Try saving to DB directly
                 _database.SaveMeasurement(measurement);
+                
+                // If it worked, save a backup in history.json
+                _historyStore.Enqueue(measurement);
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[SyncRepository] DB unavailable, queued operation for later sync: {ex.Message}");
+                Console.WriteLine($"[SyncRepository] Database unavailable. Saving to pending.json: {ex.Message}");
+                // Fallback to pending if DB is unavailable
                 _pendingStore.Enqueue(measurement);
             }
         }
 
-        public List<QuantityMeasurementEntity> GetAllMeasurements() => _cache.GetAllMeasurements();
+        public List<QuantityMeasurementEntity> GetAllMeasurements()
+        {
+            try
+            {
+                return _database.GetAllMeasurements();
+            }
+            catch (Exception)
+            {
+                // Fallback to reading from history and pending if DB is down
+                var all = _historyStore.LoadAll().ToList();
+                all.AddRange(_pendingStore.LoadAll());
+                return all;
+            }
+        }
 
-        public int GetTotalCount() => _cache.GetTotalCount();
+        public int GetTotalCount()
+        {
+            try
+            {
+                return _database.GetTotalCount();
+            }
+            catch (Exception)
+            {
+                return _historyStore.LoadAll().Count + _pendingStore.LoadAll().Count;
+            }
+        }
 
-        // Call this at startup (and optionally on exit) to push pending operations to the DB.
         public int SyncPendingToDatabase()
         {
-            if (_database == null) return 0;
-
             var pending = _pendingStore.LoadAll().ToList();
             if (pending.Count == 0) return 0;
 
@@ -68,6 +80,7 @@ namespace QuantityMeasurementApp.Repository
                 try
                 {
                     _database.SaveMeasurement(item);
+                    _historyStore.Enqueue(item); // Also back it up since it's now in DB
                     synced++;
                 }
                 catch
@@ -78,7 +91,7 @@ namespace QuantityMeasurementApp.Repository
 
             _pendingStore.OverwriteAll(remaining);
             if (synced > 0)
-                Console.WriteLine($"[SyncRepository] Synced {synced} pending operation(s) to SQL Server.");
+                Console.WriteLine($"[SyncRepository] Synced {synced} pending operation(s) to Database.");
 
             return synced;
         }

@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace QuantityMeasurementApp.Entity
@@ -7,14 +8,19 @@ namespace QuantityMeasurementApp.Entity
     [Serializable]
     public class QuantityMeasurementEntity
     {
-        public string FirstOperand { get; }
-        public string SecondOperand { get; }
-        public string OperationType { get; }
-        public string MeasurementType { get; }
-        public string FinalResult { get; }
-        public bool HasError { get; }
-        public string ErrorMessage { get; }
-        public DateTime Timestamp { get; }
+        [Key]
+        public int Id { get; set; }
+
+        public string FirstOperand { get; set; } = string.Empty;
+        public string SecondOperand { get; set; } = string.Empty;
+        public string OperationType { get; set; } = string.Empty;
+        public string MeasurementType { get; set; } = string.Empty;
+        public string FinalResult { get; set; } = string.Empty;
+        public bool HasError { get; set; }
+        public string ErrorMessage { get; set; } = string.Empty;
+        public DateTime Timestamp { get; set; }
+
+        public QuantityMeasurementEntity() { }
 
         // Used by System.Text.Json deserialization (cache + pending sync files).
         [JsonConstructor]
