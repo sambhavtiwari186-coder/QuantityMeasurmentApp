@@ -113,43 +113,37 @@ builder.Services.AddDbContext<AppDbContext>(options =>
         (connectionString.StartsWith("postgres", StringComparison.OrdinalIgnoreCase) || 
          connectionString.Contains("Host=", StringComparison.OrdinalIgnoreCase)))
     {
-        // Handle Postgres URL conversion if needed, though Npgsql 10.x handles postgres:// directly.
-        // If it's the postgres:// format, we can just pass it directly or do the manual conversion.
+        // Npgsql supports both the 'Host=...' format and the 'postgres://...' format natively.
+        // We add 'Trust Server Certificate=true' if it's not already there to handle Render SSL.
         var finalConnString = connectionString;
-        if (connectionString.StartsWith("postgres://", StringComparison.OrdinalIgnoreCase))
+        if (!finalConnString.Contains("Trust Server Certificate=", StringComparison.OrdinalIgnoreCase) && 
+            !finalConnString.Contains("TrustServerCertificate=", StringComparison.OrdinalIgnoreCase))
         {
-            try 
+            if (finalConnString.Contains("?")) finalConnString += "&Trust Server Certificate=true";
+            else if (finalConnString.Contains(";")) finalConnString += ";Trust Server Certificate=true";
+            else if (finalConnString.StartsWith("postgres")) finalConnString += "?Trust Server Certificate=true";
+            else finalConnString += ";Trust Server Certificate=true";
+        }
+        
+        // Log the connection attempt (masking password)
+        var maskedConnString = finalConnString;
+        if (maskedConnString.Contains(":"))
+        {
+            var parts = maskedConnString.Split('@');
+            if (parts.Length > 1) 
             {
-                var databaseUri = new Uri(connectionString);
-                var userInfo = databaseUri.UserInfo.Split(':', 2);
-                var pgHost = databaseUri.Host;
-                var pgPort = databaseUri.Port;
-                var pgDatabase = databaseUri.AbsolutePath.TrimStart('/');
-                
-                if (userInfo.Length == 2)
-                {
-                    var pgUser = userInfo[0];
-                    var pgPassword = userInfo[1];
-                    finalConnString = $"Host={pgHost};Port={pgPort};Database={pgDatabase};Username={pgUser};Password={pgPassword};Pooling=true;Trust Server Certificate=true";
-                }
-                else
-                {
-                    // Fallback to the original URL and let Npgsql handle it
-                    finalConnString = connectionString;
-                }
-            }
-            catch 
-            {
-                // If URI parsing fails, use original
-                finalConnString = connectionString;
+                var credentials = parts[0].Split(':');
+                if (credentials.Length > 2) maskedConnString = $"{credentials[0]}:{credentials[1]}:****@{parts[1]}";
+                else if (credentials.Length == 2) maskedConnString = $"{credentials[0]}:****@{parts[1]}";
             }
         }
+        Console.WriteLine($"[DB] Using PostgreSQL connection: {maskedConnString}");
         
         options.UseNpgsql(finalConnString);
     }
     else
     {
-        // Assume SQLite
+        Console.WriteLine($"[DB] Using SQLite connection: {connectionString}");
         options.UseSqlite(connectionString);
     }
 });
@@ -207,8 +201,18 @@ app.MapControllers();
 
 using (var scope = app.Services.CreateScope())
 {
-    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    db.Database.EnsureCreated();
+    try 
+    {
+        var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        Console.WriteLine("[DB] Checking database state...");
+        db.Database.EnsureCreated();
+        Console.WriteLine("[DB] Database is ready.");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"[DB] Error during database initialization: {ex.Message}");
+        // We don't rethrow here to allow the app to actually start and show errors in the logs/Swagger
+    }
 }
 
 app.Run();
