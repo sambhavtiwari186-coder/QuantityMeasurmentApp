@@ -98,38 +98,59 @@ builder.Services.AddRateLimiter(options =>
 
 
 // Configure Entity Framework Core with SQLite/Postgres based on environment.
-var defaultConnection = builder.Configuration.GetConnectionString("DefaultConnection");
+var defaultConnection = builder.Configuration.GetConnectionString("DefaultConnection") ?? "Data Source=quantity_measurement.db";
 var databaseUrl = builder.Configuration["DATABASE_URL"];
-var connectionString = !string.IsNullOrWhiteSpace(databaseUrl) ? databaseUrl : defaultConnection;
 
-if (!string.IsNullOrWhiteSpace(connectionString) && connectionString.StartsWith("postgres://", StringComparison.OrdinalIgnoreCase))
-{
-    var databaseUri = new Uri(connectionString);
-    var userInfo = databaseUri.UserInfo.Split(':', 2);
-    if (userInfo.Length == 2)
-    {
-        var pgHost = databaseUri.Host;
-        var pgPort = databaseUri.Port;
-        var pgUser = userInfo[0];
-        var pgPassword = userInfo[1];
-        var pgDatabase = databaseUri.AbsolutePath.TrimStart('/');
-        connectionString = $"Host={pgHost};Port={pgPort};Database={pgDatabase};Username={pgUser};Password={pgPassword};Pooling=true;Trust Server Certificate=true";
-    }
-}
+// Preference order: 
+// 1. DATABASE_URL (usually Postgres on Render)
+// 2. DefaultConnection from appsettings.json
+// 3. Hardcoded fallback
+var connectionString = !string.IsNullOrWhiteSpace(databaseUrl) ? databaseUrl : defaultConnection;
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
-    if (!string.IsNullOrWhiteSpace(connectionString) && connectionString.Contains("Host=", StringComparison.OrdinalIgnoreCase))
+    if (!string.IsNullOrWhiteSpace(connectionString) && 
+        (connectionString.StartsWith("postgres", StringComparison.OrdinalIgnoreCase) || 
+         connectionString.Contains("Host=", StringComparison.OrdinalIgnoreCase)))
     {
-        options.UseNpgsql(connectionString);
-    }
-    else if (!string.IsNullOrWhiteSpace(connectionString))
-    {
-        options.UseSqlite(connectionString);
+        // Handle Postgres URL conversion if needed, though Npgsql 10.x handles postgres:// directly.
+        // If it's the postgres:// format, we can just pass it directly or do the manual conversion.
+        var finalConnString = connectionString;
+        if (connectionString.StartsWith("postgres://", StringComparison.OrdinalIgnoreCase))
+        {
+            try 
+            {
+                var databaseUri = new Uri(connectionString);
+                var userInfo = databaseUri.UserInfo.Split(':', 2);
+                var pgHost = databaseUri.Host;
+                var pgPort = databaseUri.Port;
+                var pgDatabase = databaseUri.AbsolutePath.TrimStart('/');
+                
+                if (userInfo.Length == 2)
+                {
+                    var pgUser = userInfo[0];
+                    var pgPassword = userInfo[1];
+                    finalConnString = $"Host={pgHost};Port={pgPort};Database={pgDatabase};Username={pgUser};Password={pgPassword};Pooling=true;Trust Server Certificate=true";
+                }
+                else
+                {
+                    // Fallback to the original URL and let Npgsql handle it
+                    finalConnString = connectionString;
+                }
+            }
+            catch 
+            {
+                // If URI parsing fails, use original
+                finalConnString = connectionString;
+            }
+        }
+        
+        options.UseNpgsql(finalConnString);
     }
     else
     {
-        options.UseSqlite("Data Source=quantity_measurement.db");
+        // Assume SQLite
+        options.UseSqlite(connectionString);
     }
 });
 
