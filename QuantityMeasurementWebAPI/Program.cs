@@ -113,31 +113,56 @@ builder.Services.AddDbContext<AppDbContext>(options =>
         (connectionString.StartsWith("postgres", StringComparison.OrdinalIgnoreCase) || 
          connectionString.Contains("Host=", StringComparison.OrdinalIgnoreCase)))
     {
-        // Npgsql supports both the 'Host=...' format and the 'postgres://...' format natively.
-        // We add 'Trust Server Certificate=true' if it's not already there to handle Render SSL.
         var finalConnString = connectionString;
-        if (!finalConnString.Contains("Trust Server Certificate=", StringComparison.OrdinalIgnoreCase) && 
-            !finalConnString.Contains("TrustServerCertificate=", StringComparison.OrdinalIgnoreCase))
+        
+        // If it's a URI format (postgres://), convert it to standard Host=... format for better compatibility
+        if (connectionString.StartsWith("postgres", StringComparison.OrdinalIgnoreCase))
         {
-            if (finalConnString.Contains("?")) finalConnString += "&Trust Server Certificate=true";
-            else if (finalConnString.Contains(";")) finalConnString += ";Trust Server Certificate=true";
-            else if (finalConnString.StartsWith("postgres")) finalConnString += "?Trust Server Certificate=true";
-            else finalConnString += ";Trust Server Certificate=true";
+            try 
+            {
+                // Fix for postgres vs postgresql scheme
+                var uriString = connectionString.StartsWith("postgres://") ? 
+                    connectionString.Replace("postgres://", "postgresql://") : connectionString;
+                
+                var databaseUri = new Uri(uriString);
+                var userInfo = databaseUri.UserInfo.Split(':', 2);
+                var pgHost = databaseUri.Host;
+                var pgPort = databaseUri.Port > 0 ? databaseUri.Port : 5432;
+                var pgDatabase = databaseUri.AbsolutePath.TrimStart('/');
+                
+                if (userInfo.Length == 2)
+                {
+                    var pgUser = userInfo[0];
+                    var pgPassword = userInfo[1];
+                    finalConnString = $"Host={pgHost};Port={pgPort};Database={pgDatabase};Username={pgUser};Password={pgPassword};Pooling=true;SSL Mode=Require;Trust Server Certificate=true;";
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[DB] URI parsing failed, falling back to original: {ex.Message}");
+                // Ensure no spaces if appending to URL
+                if (!finalConnString.Contains("TrustServerCertificate=", StringComparison.OrdinalIgnoreCase))
+                {
+                    finalConnString += finalConnString.Contains("?") ? "&" : "?";
+                    finalConnString += "TrustServerCertificate=true";
+                }
+            }
+        }
+        else if (!finalConnString.Contains("Trust Server Certificate=", StringComparison.OrdinalIgnoreCase))
+        {
+            finalConnString = finalConnString.TrimEnd(';') + ";Trust Server Certificate=true;";
         }
         
         // Log the connection attempt (masking password)
-        var maskedConnString = finalConnString;
-        if (maskedConnString.Contains(":"))
+        var logString = finalConnString;
+        if (logString.Contains("Password="))
         {
-            var parts = maskedConnString.Split('@');
-            if (parts.Length > 1) 
-            {
-                var credentials = parts[0].Split(':');
-                if (credentials.Length > 2) maskedConnString = $"{credentials[0]}:{credentials[1]}:****@{parts[1]}";
-                else if (credentials.Length == 2) maskedConnString = $"{credentials[0]}:****@{parts[1]}";
-            }
+            var pStart = logString.IndexOf("Password=", StringComparison.OrdinalIgnoreCase);
+            var pEnd = logString.IndexOf(";", pStart);
+            if (pEnd == -1) pEnd = logString.Length;
+            logString = logString.Remove(pStart + 9, pEnd - (pStart + 9)).Insert(pStart + 9, "****");
         }
-        Console.WriteLine($"[DB] Using PostgreSQL connection: {maskedConnString}");
+        Console.WriteLine($"[DB] Using PostgreSQL connection: {logString}");
         
         options.UseNpgsql(finalConnString);
     }
