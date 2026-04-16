@@ -1,0 +1,12 @@
+bin/
+obj/
+**/bin/
+**/obj/
+*.db
+*.sqlite
+*.log
+*.vs/
+.vscode/
+*.user
+*.suo
+*.env

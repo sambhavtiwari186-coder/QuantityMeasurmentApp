@@ -1,0 +1,12 @@
+/home/sambhav/Downloads/sambhav/QuantityMeasurmentApp/QuantityMeasurementApp.Entity/bin/Release/net10.0/QuantityMeasurementApp.Entity.deps.json
+/home/sambhav/Downloads/sambhav/QuantityMeasurmentApp/QuantityMeasurementApp.Entity/bin/Release/net10.0/QuantityMeasurementApp.Entity.dll
+/home/sambhav/Downloads/sambhav/QuantityMeasurmentApp/QuantityMeasurementApp.Entity/bin/Release/net10.0/QuantityMeasurementApp.Entity.pdb
+/home/sambhav/Downloads/sambhav/QuantityMeasurmentApp/QuantityMeasurementApp.Entity/obj/Release/net10.0/QuantityMeasurementApp.Entity.GeneratedMSBuildEditorConfig.editorconfig
+/home/sambhav/Downloads/sambhav/QuantityMeasurmentApp/QuantityMeasurementApp.Entity/obj/Release/net10.0/QuantityMeasurementApp.Entity.AssemblyInfoInputs.cache
+/home/sambhav/Downloads/sambhav/QuantityMeasurmentApp/QuantityMeasurementApp.Entity/obj/Release/net10.0/QuantityMeasurementApp.Entity.AssemblyInfo.cs
+/home/sambhav/Downloads/sambhav/QuantityMeasurmentApp/QuantityMeasurementApp.Entity/obj/Release/net10.0/QuantityMeasurementApp.Entity.csproj.CoreCompileInputs.cache
+/home/sambhav/Downloads/sambhav/QuantityMeasurmentApp/QuantityMeasurementApp.Entity/obj/Release/net10.0/QuantityMeasurementApp.Entity.sourcelink.json
+/home/sambhav/Downloads/sambhav/QuantityMeasurmentApp/QuantityMeasurementApp.Entity/obj/Release/net10.0/QuantityMeasurementApp.Entity.dll
+/home/sambhav/Downloads/sambhav/QuantityMeasurmentApp/QuantityMeasurementApp.Entity/obj/Release/net10.0/refint/QuantityMeasurementApp.Entity.dll
+/home/sambhav/Downloads/sambhav/QuantityMeasurmentApp/QuantityMeasurementApp.Entity/obj/Release/net10.0/QuantityMeasurementApp.Entity.pdb
+/home/sambhav/Downloads/sambhav/QuantityMeasurmentApp/QuantityMeasurementApp.Entity/obj/Release/net10.0/ref/QuantityMeasurementApp.Entity.dll

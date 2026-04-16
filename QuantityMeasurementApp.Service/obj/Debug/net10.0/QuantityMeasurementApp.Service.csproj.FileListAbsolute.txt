@@ -1,0 +1,17 @@
+/home/sambhav/Downloads/sambhav/QuantityMeasurmentApp/QuantityMeasurementApp.Service/bin/Debug/net10.0/QuantityMeasurementApp.Service.deps.json
+/home/sambhav/Downloads/sambhav/QuantityMeasurmentApp/QuantityMeasurementApp.Service/bin/Debug/net10.0/QuantityMeasurementApp.Service.dll
+/home/sambhav/Downloads/sambhav/QuantityMeasurmentApp/QuantityMeasurementApp.Service/bin/Debug/net10.0/QuantityMeasurementApp.Service.pdb
+/home/sambhav/Downloads/sambhav/QuantityMeasurmentApp/QuantityMeasurementApp.Service/bin/Debug/net10.0/QuantityMeasurementApp.Entity.dll
+/home/sambhav/Downloads/sambhav/QuantityMeasurmentApp/QuantityMeasurementApp.Service/bin/Debug/net10.0/QuantityMeasurementApp.Repository.dll
+/home/sambhav/Downloads/sambhav/QuantityMeasurmentApp/QuantityMeasurementApp.Service/bin/Debug/net10.0/QuantityMeasurementApp.Entity.pdb
+/home/sambhav/Downloads/sambhav/QuantityMeasurmentApp/QuantityMeasurementApp.Service/bin/Debug/net10.0/QuantityMeasurementApp.Repository.pdb
+/home/sambhav/Downloads/sambhav/QuantityMeasurmentApp/QuantityMeasurementApp.Service/obj/Debug/net10.0/QuantityMeasurementApp.Service.csproj.AssemblyReference.cache
+/home/sambhav/Downloads/sambhav/QuantityMeasurmentApp/QuantityMeasurementApp.Service/obj/Debug/net10.0/QuantityMeasurementApp.Service.GeneratedMSBuildEditorConfig.editorconfig
+/home/sambhav/Downloads/sambhav/QuantityMeasurmentApp/QuantityMeasurementApp.Service/obj/Debug/net10.0/QuantityMeasurementApp.Service.AssemblyInfoInputs.cache
+/home/sambhav/Downloads/sambhav/QuantityMeasurmentApp/QuantityMeasurementApp.Service/obj/Debug/net10.0/QuantityMeasurementApp.Service.AssemblyInfo.cs
+/home/sambhav/Downloads/sambhav/QuantityMeasurmentApp/QuantityMeasurementApp.Service/obj/Debug/net10.0/QuantityMeasurementApp.Service.csproj.CoreCompileInputs.cache
+/home/sambhav/Downloads/sambhav/QuantityMeasurmentApp/QuantityMeasurementApp.Service/obj/Debug/net10.0/Quantity.45072C65.Up2Date
+/home/sambhav/Downloads/sambhav/QuantityMeasurmentApp/QuantityMeasurementApp.Service/obj/Debug/net10.0/QuantityMeasurementApp.Service.dll
+/home/sambhav/Downloads/sambhav/QuantityMeasurmentApp/QuantityMeasurementApp.Service/obj/Debug/net10.0/refint/QuantityMeasurementApp.Service.dll
+/home/sambhav/Downloads/sambhav/QuantityMeasurmentApp/QuantityMeasurementApp.Service/obj/Debug/net10.0/QuantityMeasurementApp.Service.pdb
+/home/sambhav/Downloads/sambhav/QuantityMeasurmentApp/QuantityMeasurementApp.Service/obj/Debug/net10.0/ref/QuantityMeasurementApp.Service.dll

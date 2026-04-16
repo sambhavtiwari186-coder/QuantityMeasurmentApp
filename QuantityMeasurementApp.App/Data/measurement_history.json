@@ -1,0 +1,13 @@
+[
+  {
+    "Id": 1,
+    "FirstOperand": "4 yard",
+    "SecondOperand": "4 yard",
+    "OperationType": "Equality",
+    "MeasurementType": "length",
+    "FinalResult": "Equal",
+    "HasError": false,
+    "ErrorMessage": "None",
+    "Timestamp": "2026-03-31T16:28:55.7215772+05:30"
+  }
+]

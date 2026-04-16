@@ -1,0 +1,16 @@
+/home/sambhav/Downloads/sambhav/QuantityMeasurmentApp/QuantityMeasurementApp.Repository/bin/Release/net10.0/QuantityMeasurementApp.Repository.deps.json
+/home/sambhav/Downloads/sambhav/QuantityMeasurmentApp/QuantityMeasurementApp.Repository/bin/Release/net10.0/QuantityMeasurementApp.Repository.dll
+/home/sambhav/Downloads/sambhav/QuantityMeasurmentApp/QuantityMeasurementApp.Repository/bin/Release/net10.0/QuantityMeasurementApp.Repository.pdb
+/home/sambhav/Downloads/sambhav/QuantityMeasurmentApp/QuantityMeasurementApp.Repository/bin/Release/net10.0/QuantityMeasurementApp.Entity.dll
+/home/sambhav/Downloads/sambhav/QuantityMeasurmentApp/QuantityMeasurementApp.Repository/bin/Release/net10.0/QuantityMeasurementApp.Entity.pdb
+/home/sambhav/Downloads/sambhav/QuantityMeasurmentApp/QuantityMeasurementApp.Repository/obj/Release/net10.0/QuantityMeasurementApp.Repository.csproj.AssemblyReference.cache
+/home/sambhav/Downloads/sambhav/QuantityMeasurmentApp/QuantityMeasurementApp.Repository/obj/Release/net10.0/QuantityMeasurementApp.Repository.GeneratedMSBuildEditorConfig.editorconfig
+/home/sambhav/Downloads/sambhav/QuantityMeasurmentApp/QuantityMeasurementApp.Repository/obj/Release/net10.0/QuantityMeasurementApp.Repository.AssemblyInfoInputs.cache
+/home/sambhav/Downloads/sambhav/QuantityMeasurmentApp/QuantityMeasurementApp.Repository/obj/Release/net10.0/QuantityMeasurementApp.Repository.AssemblyInfo.cs
+/home/sambhav/Downloads/sambhav/QuantityMeasurmentApp/QuantityMeasurementApp.Repository/obj/Release/net10.0/QuantityMeasurementApp.Repository.csproj.CoreCompileInputs.cache
+/home/sambhav/Downloads/sambhav/QuantityMeasurmentApp/QuantityMeasurementApp.Repository/obj/Release/net10.0/QuantityMeasurementApp.Repository.sourcelink.json
+/home/sambhav/Downloads/sambhav/QuantityMeasurmentApp/QuantityMeasurementApp.Repository/obj/Release/net10.0/Quantity.4E656939.Up2Date
+/home/sambhav/Downloads/sambhav/QuantityMeasurmentApp/QuantityMeasurementApp.Repository/obj/Release/net10.0/QuantityMeasurementApp.Repository.dll
+/home/sambhav/Downloads/sambhav/QuantityMeasurmentApp/QuantityMeasurementApp.Repository/obj/Release/net10.0/refint/QuantityMeasurementApp.Repository.dll
+/home/sambhav/Downloads/sambhav/QuantityMeasurmentApp/QuantityMeasurementApp.Repository/obj/Release/net10.0/QuantityMeasurementApp.Repository.pdb
+/home/sambhav/Downloads/sambhav/QuantityMeasurmentApp/QuantityMeasurementApp.Repository/obj/Release/net10.0/ref/QuantityMeasurementApp.Repository.dll
