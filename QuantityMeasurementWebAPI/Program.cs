@@ -64,15 +64,23 @@ builder.Services.AddSwaggerGen(options =>
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
+        var secretKey = builder.Configuration["JwtSettings:SecretKey"] ?? "ThisIsAVeryLongSecretKeyThatIsDefinitelyLongEnoughForHMACSHA256AlgorithmAndShouldWorkProperlyInProductionEnvironment";
+        var issuer = builder.Configuration["JwtSettings:Issuer"] ?? "QuantityMeasurementApp";
+        var audience = builder.Configuration["JwtSettings:Audience"] ?? "QuantityMeasurementApp";
+
+        Console.WriteLine($"[JWT] SecretKey length: {secretKey.Length}");
+        Console.WriteLine($"[JWT] Issuer: {issuer}");
+        Console.WriteLine($"[JWT] Audience: {audience}");
+
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = true,
             ValidateAudience = true,
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
-            ValidIssuer = builder.Configuration["JwtSettings:Issuer"] ?? "QuantityMeasurementApp",
-            ValidAudience = builder.Configuration["JwtSettings:Audience"] ?? "QuantityMeasurementApp",
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:SecretKey"] ?? "ThisIsAVeryLongSecretKeyThatIsDefinitelyLongEnoughForHMACSHA256AlgorithmAndShouldWorkProperlyInProductionEnvironment"))
+            ValidIssuer = issuer,
+            ValidAudience = audience,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))
         };
     });
 
