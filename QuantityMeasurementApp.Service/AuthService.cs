@@ -44,7 +44,7 @@ namespace QuantityMeasurementApp.Service
             await _context.SaveChangesAsync();
 
             return new AuthResponseDTO
-        
+            {
                 Token = GenerateJwtToken(user),
                 Username = user.Username,
                 Message = "Registration successful"
