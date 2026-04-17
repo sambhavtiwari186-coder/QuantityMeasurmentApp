@@ -27,6 +27,13 @@ namespace QuantityMeasurementWebAPI.Controllers
             _cache = cache;
         }
 
+        [HttpGet("status")]
+        [AllowAnonymous]
+        public IActionResult GetStatus()
+        {
+            return Ok(new { status = "Ready", mode = "PostgreSQL" });
+        }
+
         private void SafeRemoveCache(string key)
         {
             try { _cache.Remove(key); }

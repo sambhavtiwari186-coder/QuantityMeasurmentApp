@@ -1747,5 +1747,170 @@
     "HasError": false,
     "ErrorMessage": "None",
     "Timestamp": "2026-04-15T12:22:52.2989279+05:30"
+  },
+  {
+    "Id": 76,
+    "FirstOperand": "1 Celsius",
+    "SecondOperand": "1 Celsius",
+    "OperationType": "Addition",
+    "MeasurementType": "N/A",
+    "FinalResult": "Error",
+    "HasError": true,
+    "ErrorMessage": "Temperature does not support arithmetic operations.",
+    "Timestamp": "2026-04-16T18:37:42.440872+05:30"
+  },
+  {
+    "Id": 77,
+    "FirstOperand": "1 SquareMeter",
+    "SecondOperand": "1 SquareMeter",
+    "OperationType": "Addition",
+    "MeasurementType": "Area",
+    "FinalResult": "21.52782 SquareFoot",
+    "HasError": false,
+    "ErrorMessage": "None",
+    "Timestamp": "2026-04-16T18:37:51.7857113+05:30"
+  },
+  {
+    "Id": 78,
+    "FirstOperand": "5 JOULE",
+    "SecondOperand": "3 MEGAWATT",
+    "OperationType": "Addition",
+    "MeasurementType": "N/A",
+    "FinalResult": "Error",
+    "HasError": true,
+    "ErrorMessage": "Error extracting data from DTO: Invalid Power unit: MEGAWATT",
+    "Timestamp": "2026-04-16T18:41:40.58055+05:30"
+  },
+  {
+    "Id": 79,
+    "FirstOperand": "1 FEET",
+    "SecondOperand": "12 INCH",
+    "OperationType": "Equality",
+    "MeasurementType": "Length",
+    "FinalResult": "Equal",
+    "HasError": false,
+    "ErrorMessage": "None",
+    "Timestamp": "2026-04-16T18:42:11.5095648+05:30"
+  },
+  {
+    "Id": 80,
+    "FirstOperand": "1 FEET",
+    "SecondOperand": "100 INCH",
+    "OperationType": "Equality",
+    "MeasurementType": "Length",
+    "FinalResult": "Not Equal",
+    "HasError": false,
+    "ErrorMessage": "None",
+    "Timestamp": "2026-04-16T18:42:19.5613678+05:30"
+  },
+  {
+    "Id": 81,
+    "FirstOperand": "60 INCH",
+    "SecondOperand": "N/A",
+    "OperationType": "Conversion",
+    "MeasurementType": "Length",
+    "FinalResult": "5 Feet",
+    "HasError": false,
+    "ErrorMessage": "None",
+    "Timestamp": "2026-04-16T18:42:53.5448536+05:30"
+  },
+  {
+    "Id": 82,
+    "FirstOperand": "60 CENTIMETER",
+    "SecondOperand": "MILLILITRE",
+    "OperationType": "Conversion",
+    "MeasurementType": "N/A",
+    "FinalResult": "Error",
+    "HasError": true,
+    "ErrorMessage": "Invalid Length unit: MILLILITRE",
+    "Timestamp": "2026-04-16T18:44:03.3118072+05:30"
+  },
+  {
+    "Id": 83,
+    "FirstOperand": "60 CENTIMETER",
+    "SecondOperand": "KILOMETER",
+    "OperationType": "Conversion",
+    "MeasurementType": "N/A",
+    "FinalResult": "Error",
+    "HasError": true,
+    "ErrorMessage": "Invalid Length unit: KILOMETER",
+    "Timestamp": "2026-04-16T18:44:12.7475255+05:30"
+  },
+  {
+    "Id": 84,
+    "FirstOperand": "60 CENTIMETER",
+    "SecondOperand": "KM",
+    "OperationType": "Conversion",
+    "MeasurementType": "N/A",
+    "FinalResult": "Error",
+    "HasError": true,
+    "ErrorMessage": "Invalid Length unit: KM",
+    "Timestamp": "2026-04-16T18:44:20.4445803+05:30"
+  },
+  {
+    "Id": 85,
+    "FirstOperand": "60 CENTIMETER",
+    "SecondOperand": "KM",
+    "OperationType": "Conversion",
+    "MeasurementType": "N/A",
+    "FinalResult": "Error",
+    "HasError": true,
+    "ErrorMessage": "Invalid Length unit: KM",
+    "Timestamp": "2026-04-16T18:44:30.6682535+05:30"
+  },
+  {
+    "Id": 86,
+    "FirstOperand": "60 CENTIMETER",
+    "SecondOperand": "KM",
+    "OperationType": "Conversion",
+    "MeasurementType": "N/A",
+    "FinalResult": "Error",
+    "HasError": true,
+    "ErrorMessage": "Invalid Length unit: KM",
+    "Timestamp": "2026-04-16T18:44:45.6965196+05:30"
+  },
+  {
+    "Id": 87,
+    "FirstOperand": "60 CENTIMETER",
+    "SecondOperand": "KM",
+    "OperationType": "Conversion",
+    "MeasurementType": "N/A",
+    "FinalResult": "Error",
+    "HasError": true,
+    "ErrorMessage": "Invalid Length unit: KM",
+    "Timestamp": "2026-04-16T18:44:47.9833863+05:30"
+  },
+  {
+    "Id": 88,
+    "FirstOperand": "60 CENTIMETER",
+    "SecondOperand": "KM",
+    "OperationType": "Conversion",
+    "MeasurementType": "N/A",
+    "FinalResult": "Error",
+    "HasError": true,
+    "ErrorMessage": "Invalid Length unit: KM",
+    "Timestamp": "2026-04-16T18:44:54.7447374+05:30"
+  },
+  {
+    "Id": 89,
+    "FirstOperand": "10 KG",
+    "SecondOperand": "GRAM",
+    "OperationType": "Conversion",
+    "MeasurementType": "N/A",
+    "FinalResult": "Error",
+    "HasError": true,
+    "ErrorMessage": "Error extracting data from DTO: Invalid Weight unit: KG",
+    "Timestamp": "2026-04-16T18:45:16.5746815+05:30"
+  },
+  {
+    "Id": 90,
+    "FirstOperand": "1 KILOGRAM",
+    "SecondOperand": "12 KILOGRAM",
+    "OperationType": "Equality",
+    "MeasurementType": "Weight",
+    "FinalResult": "Not Equal",
+    "HasError": false,
+    "ErrorMessage": "None",
+    "Timestamp": "2026-04-16T18:46:31.9908655+05:30"
   }
 ]
