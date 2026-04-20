@@ -180,6 +180,7 @@ namespace QuantityMeasurementWebAPI.Controllers
         {
             try
             {
+                /*
                 try
                 {
                     var cachedHistory = _cache.GetString(HistoryCacheKey);
@@ -190,9 +191,11 @@ namespace QuantityMeasurementWebAPI.Controllers
                     }
                 }
                 catch (Exception ex) { Console.WriteLine($"Cache read failure: {ex.Message}"); }
+                */
 
                 var results = _repository.GetAllMeasurements();
 
+                /*
                 try
                 {
                     var cacheOptions = new DistributedCacheEntryOptions
@@ -202,6 +205,7 @@ namespace QuantityMeasurementWebAPI.Controllers
                     _cache.SetString(HistoryCacheKey, JsonSerializer.Serialize(results), cacheOptions);
                 }
                 catch (Exception ex) { Console.WriteLine($"Cache write failure: {ex.Message}"); }
+                */
 
                 return Ok(results);
             }
