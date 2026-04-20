@@ -41,6 +41,7 @@ namespace QuantityMeasurementApp.Entity
         {
             switch (name.ToUpper())
             {
+                case "KG":
                 case "KILOGRAM": return Kilogram;
                 case "GRAM": return Gram;
                 case "POUND": return Pound;

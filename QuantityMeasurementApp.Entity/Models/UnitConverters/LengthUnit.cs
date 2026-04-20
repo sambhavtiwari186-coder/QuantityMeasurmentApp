@@ -8,6 +8,8 @@ namespace QuantityMeasurementApp.Entity
         public static readonly LengthUnit Inch = new LengthUnit("Inch", 1.0 / 12.0);
         public static readonly LengthUnit Yard = new LengthUnit("Yard", 3.0);
         public static readonly LengthUnit Centimeter = new LengthUnit("Centimeter", 1.0 / 30.48);
+        public static readonly LengthUnit Kilometer = new LengthUnit("Kilometer", 3280.84);
+        public static readonly LengthUnit Mile = new LengthUnit("Mile", 5280.0);
 
         private readonly string name;
         private readonly double conversionFactor;
@@ -44,6 +46,9 @@ namespace QuantityMeasurementApp.Entity
                 case "INCH": return Inch;
                 case "YARD": return Yard;
                 case "CENTIMETER": return Centimeter;
+                case "KM":
+                case "KILOMETER": return Kilometer;
+                case "MILE": return Mile;
                 default: throw new System.ArgumentException($"Invalid Length unit: {name}");
             }
         }

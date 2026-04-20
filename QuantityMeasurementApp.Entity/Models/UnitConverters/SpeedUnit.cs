@@ -7,6 +7,7 @@ namespace QuantityMeasurementApp.Entity
         public static readonly SpeedUnit Kmph = new SpeedUnit("Kmph", 1.0);
         public static readonly SpeedUnit Mph = new SpeedUnit("Mph", 1.60934);
         public static readonly SpeedUnit Mps = new SpeedUnit("Mps", 3.6);
+        public static readonly SpeedUnit Knot = new SpeedUnit("Knot", 1.852);
 
         private readonly string name;
         private readonly double conversionFactor;
@@ -30,6 +31,7 @@ namespace QuantityMeasurementApp.Entity
                 case "KMPH": return Kmph;
                 case "MPH": return Mph;
                 case "MPS": return Mps;
+                case "KNOT": return Knot;
                 default: throw new ArgumentException($"Invalid Speed unit: {name}");
             }
         }

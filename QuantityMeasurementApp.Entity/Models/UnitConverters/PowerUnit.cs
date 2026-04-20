@@ -6,6 +6,7 @@ namespace QuantityMeasurementApp.Entity
     {
         public static readonly PowerUnit Watt = new PowerUnit("Watt", 1.0);
         public static readonly PowerUnit Kilowatt = new PowerUnit("Kilowatt", 1000.0);
+        public static readonly PowerUnit Megawatt = new PowerUnit("Megawatt", 1000000.0);
         public static readonly PowerUnit Horsepower = new PowerUnit("Horsepower", 745.7);
 
         private readonly string name;
@@ -29,6 +30,7 @@ namespace QuantityMeasurementApp.Entity
             {
                 case "WATT": return Watt;
                 case "KILOWATT": return Kilowatt;
+                case "MEGAWATT": return Megawatt;
                 case "HORSEPOWER": return Horsepower;
                 default: throw new ArgumentException($"Invalid Power unit: {name}");
             }

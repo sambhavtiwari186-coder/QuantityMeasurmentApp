@@ -6,6 +6,7 @@ namespace QuantityMeasurementApp.Entity
     {
         public static readonly AngleUnit Degree = new AngleUnit("Degree", 1.0);
         public static readonly AngleUnit Radian = new AngleUnit("Radian", 180.0 / Math.PI);
+        public static readonly AngleUnit Gradian = new AngleUnit("Gradian", 0.9);
 
         private readonly string name;
         private readonly double conversionFactor;
@@ -28,6 +29,7 @@ namespace QuantityMeasurementApp.Entity
             {
                 case "DEGREE": return Degree;
                 case "RADIAN": return Radian;
+                case "GRADIAN": return Gradian;
                 default: throw new ArgumentException($"Invalid Angle unit: {name}");
             }
         }

@@ -40,6 +40,7 @@ namespace QuantityMeasurementApp.Entity
             switch (name.ToUpper())
             {
                 case "LITRE": return Litre;
+                case "ML":
                 case "MILLILITRE": return Millilitre;
                 case "GALLON": return Gallon;
                 default: throw new System.ArgumentException($"Invalid Volume unit: {name}");

@@ -5,8 +5,11 @@ namespace QuantityMeasurementApp.Entity
     public class PressureUnit : IMeasurable
     {
         public static readonly PressureUnit Pascal = new PressureUnit("Pascal", 1.0);
+        public static readonly PressureUnit Kilopascal = new PressureUnit("Kilopascal", 1000.0);
         public static readonly PressureUnit Bar = new PressureUnit("Bar", 100000.0);
         public static readonly PressureUnit Psi = new PressureUnit("Psi", 6894.76);
+        public static readonly PressureUnit Atmosphere = new PressureUnit("Atmosphere", 101325.0);
+        public static readonly PressureUnit Torr = new PressureUnit("Torr", 133.322);
 
         private readonly string name;
         private readonly double conversionFactor;
@@ -28,8 +31,11 @@ namespace QuantityMeasurementApp.Entity
             switch (name.ToUpper())
             {
                 case "PASCAL": return Pascal;
+                case "KILOPASCAL": return Kilopascal;
                 case "BAR": return Bar;
                 case "PSI": return Psi;
+                case "ATMOSPHERE": return Atmosphere;
+                case "TORR": return Torr;
                 default: throw new ArgumentException($"Invalid Pressure unit: {name}");
             }
         }
