@@ -64,9 +64,13 @@ builder.Services.AddSwaggerGen(options =>
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
-        var secretKey = builder.Configuration["JwtSettings:SecretKey"] ?? "ThisIsAVeryLongSecretKeyThatIsDefinitelyLongEnoughForHMACSHA256AlgorithmAndShouldWorkProperlyInProductionEnvironment";
+        var secretKey = builder.Configuration["JwtSettings:SecretKey"] ?? "super_secret_key_that_is_long_enough_for_hmac_sha256";
+        if (secretKey.Length < 32)
+        {
+            secretKey = secretKey.PadRight(32, '0');
+        }
         var issuer = builder.Configuration["JwtSettings:Issuer"] ?? "QuantityMeasurementApp";
-        var audience = builder.Configuration["JwtSettings:Audience"] ?? "QuantityMeasurementApp";
+        var audience = builder.Configuration["JwtSettings:Audience"] ?? "QuantityMeasurementAppUsers";
 
         Console.WriteLine($"[JWT] SecretKey length: {secretKey.Length}");
         Console.WriteLine($"[JWT] Issuer: {issuer}");

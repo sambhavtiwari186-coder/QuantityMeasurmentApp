@@ -90,8 +90,8 @@ namespace QuantityMeasurementApp.Service
                     new Claim(ClaimTypes.Name, user.Username)
                 }),
                 Expires = DateTime.UtcNow.AddMinutes(double.Parse(jwtSettings["ExpiryMinutes"] ?? "60")),
-                Issuer = jwtSettings["Issuer"],
-                Audience = jwtSettings["Audience"],
+                Issuer = jwtSettings["Issuer"] ?? "QuantityMeasurementApp",
+                Audience = jwtSettings["Audience"] ?? "QuantityMeasurementAppUsers",
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
 
