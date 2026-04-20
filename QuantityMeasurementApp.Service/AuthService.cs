@@ -73,7 +73,12 @@ namespace QuantityMeasurementApp.Service
         private string GenerateJwtToken(UserEntity user)
         {
             var jwtSettings = _configuration.GetSection("JwtSettings");
-            var key = Encoding.ASCII.GetBytes(jwtSettings["SecretKey"] ?? "super_secret_key_that_is_long_enough_for_hmac_sha256");
+            var secretKeyString = jwtSettings["SecretKey"] ?? "super_secret_key_that_is_long_enough_for_hmac_sha256";
+            if (secretKeyString.Length < 32)
+            {
+                secretKeyString = secretKeyString.PadRight(32, '0');
+            }
+            var key = Encoding.ASCII.GetBytes(secretKeyString);
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
